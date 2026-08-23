@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eclipsa — Stream Cinema. Feel Everything.</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+  // The first visit begins with account creation; signed-in members continue to the home page.
+  try {
+    const savedUser = JSON.parse(localStorage.getItem('eclipsa_user') || 'null');
+    if (!savedUser || !savedUser.loggedIn) window.location.replace('signup.html');
+  } catch (error) {
+    window.location.replace('signup.html');
+  }
+</script>
+</head>
+<body>
+
+<!-- Ambient background: aurora blobs + mesh grid, sits behind everything -->
+<div class="ambient" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+  <div class="grid-mesh"></div>
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <a href="#" class="brand">
+    <span class="mark">E</span>
+    ECLIPSA
+  </a>
+
+  <nav class="nav-links">
+    <a href="#" class="active">Home</a>
+    <a href="movies.html">Movies</a>
+    <a href="series.html">Series</a>
+    <a href="anime.html">Anime</a>
+  </nav>
+
+  <div class="nav-actions">
+    <div class="search-wrap" id="searchWrap">
+      <div class="search-pill">
+        <input type="text" id="searchInput" placeholder="Search movies, series..." autocomplete="off">
+        <button type="button" id="searchBtn" aria-label="Search"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="search-results-dropdown" id="searchResultsDropdown" role="listbox"></div>
+    </div>
+    <button class="icon-btn" aria-label="Notifications"><i class="fas fa-bell"></i><span class="ping"></span></button>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch to light theme" title="Switch theme"><i class="fas fa-sun"></i></button>
+    
+    <div class="user-menu-wrap" id="userMenuWrap">
+      <a href="signup.html" class="nav-signin-link" id="navSignInLink"><i class="fas fa-user-plus"></i> <span>Sign Up</span></a>
+      <button class="avatar-btn" id="navAvatarBtn" title="Account Menu" style="display:none;" aria-expanded="false">U</button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-head">
+          <div class="user-dropdown-name" id="userNameDisplay">User</div>
+          <div class="user-dropdown-email" id="userEmailDisplay">user@example.com</div>
+        </div>
+        <a href="#watchlist"><i class="fas fa-heart"></i> My Watchlist</a>
+        <a href="#settings"><i class="fas fa-sliders"></i> Account Settings</a>
+        <button type="button" class="signout-btn" id="signOutBtn"><i class="fas fa-right-from-bracket"></i> Sign Out</button>
+      </div>
+    </div>
+
+    <button class="icon-btn nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-badges">
+      <span class="chip">✦ All 5 Seasons</span>
+      <span class="chip">4K Ultra HD</span>
+    </div>
+
+    <h4 id="hero-kicker"><span class="live-dot"></span>Prestige Drama · 16 Primetime Emmys</h4>
+
+    <h1 id="hero-title">Breaking <span class="grad">Bad</span></h1>
+
+    <div class="hero-meta" id="hero-meta">
+      <span class="rating"><i class="fas fa-star"></i> 9.5 IMDb</span>
+      <span class="dot-sep"></span>
+      <span>5 Seasons</span>
+      <span class="dot-sep"></span>
+      <span>2008–2013</span>
+      <span class="dot-sep"></span>
+      <span>Crime · Drama · Thriller</span>
+    </div>
+
+    <p class="desc" id="hero-desc">
+      A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine to secure his family’s financial future.
+    </p>
+
+    <div class="hero-cta">
+      <button class="btn btn-primary" data-ripple><i class="fas fa-play"></i> Watch Now</button>
+      <button class="btn btn-ghost" data-ripple><i class="fas fa-film"></i> Watch Trailer</button>
+      <button class="btn btn-icon-circle" id="heroAddListBtn" data-ripple aria-label="Add to list" title="Add to My List"><i class="fas fa-plus"></i></button>
+    </div>
+
+    <div class="hero-specs">
+      <div class="spec-tag"><i class="fas fa-tv"></i> 4K Ultra HD</div>
+      <div class="spec-tag"><i class="fas fa-volume-up"></i> Dolby Atmos</div>
+      <div class="spec-tag"><i class="fas fa-closed-captioning"></i> CC &amp; 14 Languages</div>
+      <div class="spec-tag"><i class="fas fa-shield-alt"></i> TV-MA / 18+</div>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+  <div class="hero-slider-nav" aria-label="Hero slider controls">
+    <button class="hero-nav-arrow" id="heroPrevBtn" aria-label="Previous featured title" title="Previous title">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="hero-pagination" aria-label="Featured titles">
+      <button class="is-active" type="button" aria-label="Show featured title 1"></button>
+      <button type="button" aria-label="Show featured title 2"></button>
+      <button type="button" aria-label="Show featured title 3"></button>
+      <button type="button" aria-label="Show featured title 4"></button>
+      <button type="button" aria-label="Show featured title 5"></button>
+      <button type="button" aria-label="Show featured title 6"></button>
+    </div>
+    <button class="hero-nav-arrow" id="heroNextBtn" aria-label="Next featured title" title="Next title">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</section>
+
+<!-- ============ STICKY GENRE FILTER BAR ============ -->
+<div class="filter-bar-wrap" id="filterBarWrap">
+  <div class="wrap">
+    <div class="filter-bar" id="filterBar" role="tablist" aria-label="Catalog genre filters">
+      <button class="filter-pill is-active" data-filter="all" type="button"><i class="fas fa-border-all"></i> All Titles</button>
+      <button class="filter-pill" data-filter="trending" type="button"><i class="fas fa-fire"></i> Trending</button>
+      <button class="filter-pill" data-filter="action" type="button"><i class="fas fa-bolt"></i> Action</button>
+      <button class="filter-pill" data-filter="drama" type="button"><i class="fas fa-masks-theater"></i> Drama</button>
+      <button class="filter-pill" data-filter="crime" type="button"><i class="fas fa-user-secret"></i> Crime</button>
+      <button class="filter-pill" data-filter="sci-fi" type="button"><i class="fas fa-rocket"></i> Sci-Fi</button>
+      <button class="filter-pill" data-filter="thriller" type="button"><i class="fas fa-skull"></i> Thriller</button>
+      <button class="filter-pill" data-filter="fantasy" type="button"><i class="fas fa-wand-magic-sparkles"></i> Fantasy</button>
+      <button class="filter-pill" data-filter="comedy" type="button"><i class="fas fa-face-laugh-beam"></i> Comedy</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 1. TRENDING NOW ============ -->
+<section id="trending" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Top 10 Today</span>
+      <h2>Trending Now</h2>
+      <p>The most-watched movies and series across the globe right now.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">Explore All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#trending-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#trending-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="trending-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge rank">#01</span>
+        <img src="pictures/genre-scifi.jpg" alt="Dune: Part Two" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Dune: Part Two</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.9</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Sci-Fi · Adventure</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge rank">#02</span>
+        <img src="pictures/hero-crime-thriller.jpg" alt="The Batman" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Batman</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.8</span> <span class="sep">•</span> <span>2022</span> <span class="sep">•</span> <span>Action · Crime</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge rank">#03</span>
+        <img src="pictures/genre-drama.jpg" alt="Oppenheimer" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Oppenheimer</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.0</span> <span class="sep">•</span> <span>2023</span> <span class="sep">•</span> <span>Biography · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge rank">#04</span>
+        <img src="pictures/bar2.jpeg" alt="Captain America: The Winter Soldier" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Captain America: Winter Soldier</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.7</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Action · Marvel</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge rank">#05</span>
+        <img src="pictures/genre-action.jpg" alt="Shōgun" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Shōgun</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.1</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Historical · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge rank">#06</span>
+        <img src="pictures/bar1.jpeg" alt="The Avengers" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Avengers</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.5</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Action · Sci-Fi</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge rank">#07</span>
+        <img src="pictures/hero-mystery-night.jpg" alt="The Last of Us" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Last of Us</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.8</span> <span class="sep">•</span> <span>2023</span> <span class="sep">•</span> <span>Drama · Sci-Fi</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge rank">#08</span>
+        <img src="pictures/hero-scifi-epic.jpg" alt="Horizon: Beyond Colony" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Horizon: Beyond Colony</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.2</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Sci-Fi · Mystery</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. NEW RELEASES ============ -->
+<section id="new-releases" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Just Landed</span>
+      <h2>New Releases</h2>
+      <p>Fresh from theaters and premiere studios, straight to your screen.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#new-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#new-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="new-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">NEW · 4K</span>
+        <img src="pictures/hero-crime-thriller.jpg" alt="Crimson Asphalt Protocol" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Crimson Asphalt Protocol</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.9</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Crime Noir</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">NEW · 4K</span>
+        <img src="pictures/hero-action-epic.jpg" alt="Iron Vanguard Reckoning" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Iron Vanguard Reckoning</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.8</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Action · War</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">NEW</span>
+        <img src="pictures/hero-mystery-night.jpg" alt="Whispering Tides" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Whispering Tides</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.0</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Mystery · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">NEW · 4K</span>
+        <img src="pictures/hero-fantasy-quest.jpg" alt="Crown of Ascent" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Crown of Ascent</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.3</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Epic Fantasy</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">NEW</span>
+        <img src="pictures/hero-psycho-thriller.jpg" alt="The Glass Alibi" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Glass Alibi</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.1</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Psychological</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">NEW</span>
+        <img src="pictures/bar4.jpeg" alt="The Long Static" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Long Static</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.2</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Mystery · Thriller</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">NEW</span>
+        <img src="pictures/bar5.jpeg" alt="Ashfield Chronicles" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Ashfield Chronicles</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.4</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Crime · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">NEW</span>
+        <img src="pictures/bar18.jpeg" alt="Paper Moons" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Paper Moons</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.0</span> <span class="sep">•</span> <span>2026</span> <span class="sep">•</span> <span>Fantasy</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. CLASSIC MUST-WATCH ============ -->
+<section id="classics" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Timeless Cinema</span>
+      <h2>Classic Must-Watch</h2>
+      <p>Curated legendary masterpieces and cinematic landmarks of all time.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#classics-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#classics-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="classics-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/art-godfather.jpg" alt="The Godfather" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Godfather</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.2</span> <span class="sep">•</span> <span>1972</span> <span class="sep">•</span> <span>Crime · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/genre-comedy.jpg" alt="Pulp Fiction" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Pulp Fiction</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.9</span> <span class="sep">•</span> <span>1994</span> <span class="sep">•</span> <span>Crime · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/genre-thriller.jpg" alt="The Dark Knight" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Dark Knight</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.0</span> <span class="sep">•</span> <span>2008</span> <span class="sep">•</span> <span>Action · Crime</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/genre-scifi.jpg" alt="Interstellar" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Interstellar</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.7</span> <span class="sep">•</span> <span>2014</span> <span class="sep">•</span> <span>Sci-Fi · Adventure</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/hero-psycho-thriller.jpg" alt="Fight Club" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Fight Club</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.8</span> <span class="sep">•</span> <span>1999</span> <span class="sep">•</span> <span>Drama · Mystery</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/bar11.jpeg" alt="Breaking Bad" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Breaking Bad</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.5</span> <span class="sep">•</span> <span>2008</span> <span class="sep">•</span> <span>Crime · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/genre-fantasy.jpg" alt="The Lord of the Rings" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Lord of the Rings</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.0</span> <span class="sep">•</span> <span>2003</span> <span class="sep">•</span> <span>Fantasy · Epic</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/hero-velvet-hour.png" alt="Inception" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Inception</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.8</span> <span class="sep">•</span> <span>2010</span> <span class="sep">•</span> <span>Sci-Fi · Thriller</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold">CLASSIC</span>
+        <img src="pictures/bar14.jpeg" alt="The Shawshank Redemption" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Shawshank Redemption</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.3</span> <span class="sep">•</span> <span>1994</span> <span class="sep">•</span> <span>Drama</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. TOP RATED ============ -->
+<section id="top-rated" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Highest Rated</span>
+      <h2>Top Rated Masterpieces</h2>
+      <p>Critically acclaimed titles with the highest global audience reviews.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#top-rated-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#top-rated-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="top-rated-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold"><i class="fas fa-star"></i> 9.4</span>
+        <img src="pictures/bar17.jpeg" alt="Chernobyl" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Chernobyl</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.4</span> <span class="sep">•</span> <span>2019</span> <span class="sep">•</span> <span>Drama · History</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold"><i class="fas fa-star"></i> 9.3</span>
+        <img src="pictures/genre-fantasy.jpg" alt="Arcane" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Arcane</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.3</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Animation · Action</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold"><i class="fas fa-star"></i> 9.2</span>
+        <img src="pictures/art-godfather.jpg" alt="The Sopranos" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Sopranos</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.2</span> <span class="sep">•</span> <span>2007</span> <span class="sep">•</span> <span>Crime · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold"><i class="fas fa-star"></i> 9.1</span>
+        <img src="pictures/hero-psycho-thriller.jpg" alt="Succession" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Succession</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.9</span> <span class="sep">•</span> <span>2023</span> <span class="sep">•</span> <span>Drama · Satire</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold"><i class="fas fa-star"></i> 9.0</span>
+        <img src="pictures/genre-drama.jpg" alt="Oppenheimer" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Oppenheimer</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.0</span> <span class="sep">•</span> <span>2023</span> <span class="sep">•</span> <span>Biography · History</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold"><i class="fas fa-star"></i> 8.9</span>
+        <img src="pictures/hero-scifi-epic.jpg" alt="Dune: Part Two" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Dune: Part Two</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.9</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Sci-Fi · Adventure</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold"><i class="fas fa-star"></i> 8.8</span>
+        <img src="pictures/bar12.jpeg" alt="Severance" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Severance</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.7</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Sci-Fi · Mystery</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge gold"><i class="fas fa-star"></i> 8.6</span>
+        <img src="pictures/bar18.jpeg" alt="Spirited Away" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Spirited Away</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.6</span> <span class="sep">•</span> <span>2001</span> <span class="sep">•</span> <span>Animation · Fantasy</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. POPULAR SERIES ============ -->
+<section id="popular-series" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Binge-Worthy TV</span>
+      <h2>Popular Series</h2>
+      <p>Addictive prestige dramas, thriller franchises, and global TV phenomena.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#series-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#series-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="series-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SEASON 4</span>
+        <img src="pictures/bar8.jpeg" alt="Stranger Things" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Stranger Things</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.7</span> <span class="sep">•</span> <span>S4</span> <span class="sep">•</span> <span>Sci-Fi · Horror</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SEASON 2</span>
+        <img src="pictures/hero-mystery-night.jpg" alt="The Last of Us" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Last of Us</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.8</span> <span class="sep">•</span> <span>S2</span> <span class="sep">•</span> <span>Drama · Sci-Fi</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SEASON 2</span>
+        <img src="pictures/hero-fantasy-quest.jpg" alt="House of the Dragon" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>House of the Dragon</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.6</span> <span class="sep">•</span> <span>S2</span> <span class="sep">•</span> <span>Action · Fantasy</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SEASON 3</span>
+        <img src="pictures/bar15.jpeg" alt="The Bear" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Bear</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.6</span> <span class="sep">•</span> <span>S3</span> <span class="sep">•</span> <span>Comedy · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SEASON 1</span>
+        <img src="pictures/genre-action.jpg" alt="Shōgun" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Shōgun</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.1</span> <span class="sep">•</span> <span>S1</span> <span class="sep">•</span> <span>Drama · History</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">COMPLETE</span>
+        <img src="pictures/hero-crime-thriller.jpg" alt="Peaky Blinders" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Peaky Blinders</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.8</span> <span class="sep">•</span> <span>S6</span> <span class="sep">•</span> <span>Crime · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SEASON 2</span>
+        <img src="pictures/bar5.jpeg" alt="Mindhunter" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Mindhunter</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.6</span> <span class="sep">•</span> <span>S2</span> <span class="sep">•</span> <span>Crime · Thriller</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SEASON 4</span>
+        <img src="pictures/bar16.jpeg" alt="True Detective" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>True Detective</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.9</span> <span class="sep">•</span> <span>S4</span> <span class="sep">•</span> <span>Crime · Mystery</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. ACTION & THRILLER ============ -->
+<section id="action-thriller" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">High Adrenaline</span>
+      <h2>Action &amp; Thriller</h2>
+      <p>Explosive blockbusters, lethal operatives, and high-octane chases.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#action-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#action-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="action-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">ACTION</span>
+        <img src="pictures/genre-action.jpg" alt="John Wick: Chapter 4" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>John Wick: Chapter 4</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.7</span> <span class="sep">•</span> <span>2023</span> <span class="sep">•</span> <span>Action · Thriller</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">ACTION</span>
+        <img src="pictures/hero-action-epic.jpg" alt="Top Gun: Maverick" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Top Gun: Maverick</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.6</span> <span class="sep">•</span> <span>2022</span> <span class="sep">•</span> <span>Action · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">ACTION</span>
+        <img src="pictures/bar10.jpeg" alt="Mad Max: Fury Road" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Mad Max: Fury Road</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.1</span> <span class="sep">•</span> <span>2015</span> <span class="sep">•</span> <span>Action · Adventure</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">THRILLER</span>
+        <img src="pictures/hero-crime-thriller.jpg" alt="Sicario" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Sicario</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 7.8</span> <span class="sep">•</span> <span>2015</span> <span class="sep">•</span> <span>Action · Crime</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">THRILLER</span>
+        <img src="pictures/genre-thriller.jpg" alt="The Batman" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Batman</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.8</span> <span class="sep">•</span> <span>2022</span> <span class="sep">•</span> <span>Crime · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">ACTION</span>
+        <img src="pictures/bar4.jpeg" alt="Casino Royale" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Casino Royale</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.0</span> <span class="sep">•</span> <span>2006</span> <span class="sep">•</span> <span>Action · Thriller</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">ACTION</span>
+        <img src="pictures/bar9.jpeg" alt="Mission: Impossible" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Mission: Impossible</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.2</span> <span class="sep">•</span> <span>2023</span> <span class="sep">•</span> <span>Action · Adventure</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">THRILLER</span>
+        <img src="pictures/bar11.jpeg" alt="Heat" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Heat</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.3</span> <span class="sep">•</span> <span>1995</span> <span class="sep">•</span> <span>Action · Crime</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. SCI-FI & FANTASY ============ -->
+<section id="scifi-fantasy" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Other Worlds</span>
+      <h2>Sci-Fi &amp; Fantasy</h2>
+      <p>Mind-bending futures, cosmic epics, and magical realms.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#scifi-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#scifi-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="scifi-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/genre-scifi.jpg" alt="Blade Runner 2049" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Blade Runner 2049</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.0</span> <span class="sep">•</span> <span>2017</span> <span class="sep">•</span> <span>Sci-Fi · Mystery</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">ANIME</span>
+        <img src="pictures/hero-neon-quest.png" alt="Cyberpunk: Edgerunners" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Cyberpunk: Edgerunners</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.3</span> <span class="sep">•</span> <span>2022</span> <span class="sep">•</span> <span>Animation · Sci-Fi</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/hero-scifi-epic.jpg" alt="Dune" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Dune</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.2</span> <span class="sep">•</span> <span>2021</span> <span class="sep">•</span> <span>Sci-Fi · Adventure</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/hero-after-dark.png" alt="The Matrix" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Matrix</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.7</span> <span class="sep">•</span> <span>1999</span> <span class="sep">•</span> <span>Sci-Fi · Action</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/hero-skybound.png" alt="Avatar: The Way of Water" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Avatar: Way of Water</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 7.6</span> <span class="sep">•</span> <span>2022</span> <span class="sep">•</span> <span>Sci-Fi · Action</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/bar8.jpeg" alt="Foundation" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Foundation</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 7.6</span> <span class="sep">•</span> <span>2023</span> <span class="sep">•</span> <span>Sci-Fi · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">FANTASY</span>
+        <img src="pictures/genre-fantasy.jpg" alt="Game of Thrones" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Game of Thrones</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.2</span> <span class="sep">•</span> <span>2019</span> <span class="sep">•</span> <span>Fantasy · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">FANTASY</span>
+        <img src="pictures/hero-fantasy-quest.jpg" alt="Arcane" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Arcane</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.0</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Animation · Fantasy</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. RECOMMENDED FOR YOU ============ -->
+<section id="recommended" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Curated Picks</span>
+      <h2>Recommended For You</h2>
+      <p>Personalized suggestions handpicked from what you love watching.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#rec-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#rec-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="rec-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">RECOMMENDED</span>
+        <img src="pictures/bar7.jpeg" alt="Whiplash" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Whiplash</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.5</span> <span class="sep">•</span> <span>2014</span> <span class="sep">•</span> <span>Drama · Music</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">RECOMMENDED</span>
+        <img src="pictures/genre-drama.jpg" alt="Parasite" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Parasite</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.5</span> <span class="sep">•</span> <span>2019</span> <span class="sep">•</span> <span>Drama · Thriller</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">RECOMMENDED</span>
+        <img src="pictures/genre-comedy.jpg" alt="Everything Everywhere All at Once" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Everything Everywhere</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 7.8</span> <span class="sep">•</span> <span>2022</span> <span class="sep">•</span> <span>Action · Sci-Fi</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">RECOMMENDED</span>
+        <img src="pictures/hero-velvet-hour.png" alt="Knives Out" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Knives Out</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 7.9</span> <span class="sep">•</span> <span>2019</span> <span class="sep">•</span> <span>Comedy · Mystery</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">RECOMMENDED</span>
+        <img src="pictures/bar3.jpeg" alt="The Prestige" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Prestige</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.5</span> <span class="sep">•</span> <span>2006</span> <span class="sep">•</span> <span>Drama · Mystery</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge">RECOMMENDED</span>
+        <img src="pictures/hero-mystery-night.jpg" alt="Prisoners" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Prisoners</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.2</span> <span class="sep">•</span> <span>2013</span> <span class="sep">•</span> <span>Crime · Drama</span></div>
+      </div>
+  </div>
+</section>
+
+<!-- ============ 7. SCI-FI & FANTASY ============ -->
+<section id="scifi-fantasy" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Other Worlds</span>
+      <h2>Sci-Fi &amp; Fantasy</h2>
+      <p>Mind-bending futures, cosmic epics, and magical realms.</p>
+    </div>
+    <div class="section-actions">
+      <a href="#discovery" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+      <div class="rail-controls">
+        <button class="rail-btn" data-scroll="#scifi-row" data-dir="-1" aria-label="Scroll left"><i class="fas fa-chevron-left"></i></button>
+        <button class="rail-btn" data-scroll="#scifi-row" data-dir="1" aria-label="Scroll right"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-scroller" id="scifi-row">
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/genre-scifi.jpg" alt="Blade Runner 2049" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Blade Runner 2049</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.0</span> <span class="sep">•</span> <span>2017</span> <span class="sep">•</span> <span>Sci-Fi · Mystery</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">ANIME</span>
+        <img src="pictures/hero-neon-quest.png" alt="Cyberpunk: Edgerunners" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Cyberpunk: Edgerunners</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.3</span> <span class="sep">•</span> <span>2022</span> <span class="sep">•</span> <span>Animation · Sci-Fi</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/hero-scifi-epic.jpg" alt="Dune" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Dune</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.2</span> <span class="sep">•</span> <span>2021</span> <span class="sep">•</span> <span>Sci-Fi · Adventure</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/hero-after-dark.png" alt="The Matrix" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>The Matrix</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 8.7</span> <span class="sep">•</span> <span>1999</span> <span class="sep">•</span> <span>Sci-Fi · Action</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/hero-skybound.png" alt="Avatar: The Way of Water" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Avatar: Way of Water</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 7.6</span> <span class="sep">•</span> <span>2022</span> <span class="sep">•</span> <span>Sci-Fi · Action</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">SCI-FI</span>
+        <img src="pictures/bar8.jpeg" alt="Foundation" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Foundation</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 7.6</span> <span class="sep">•</span> <span>2023</span> <span class="sep">•</span> <span>Sci-Fi · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">FANTASY</span>
+        <img src="pictures/genre-fantasy.jpg" alt="Game of Thrones" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Game of Thrones</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.2</span> <span class="sep">•</span> <span>2019</span> <span class="sep">•</span> <span>Fantasy · Drama</span></div>
+      </div>
+    </div>
+    <div class="movie-card" data-ripple>
+      <div class="card-media">
+        <span class="card-badge blue">FANTASY</span>
+        <img src="pictures/hero-fantasy-quest.jpg" alt="Arcane" loading="lazy">
+        <div class="card-play"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="card-info">
+        <h5>Arcane</h5>
+        <div class="card-tags"><span class="star-rating"><i class="fas fa-star"></i> 9.0</span> <span class="sep">•</span> <span>2024</span> <span class="sep">•</span> <span>Animation · Fantasy</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORIES ============ -->
+<section id="categories" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Browse</span>
+      <h2>Categories</h2>
+      <p>Find your next obsession by genre.</p>
+    </div>
+  </div>
+
+  <div class="category-grid reveal-stagger">
+    <div class="category-tile"><img src="https://images.pexels.com/photos/10175091/pexels-photo-10175091.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Action</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/33312427/pexels-photo-33312427.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Adventure</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/26732100/pexels-photo-26732100.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Crime</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/31788102/pexels-photo-31788102.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Drama</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/13327765/pexels-photo-13327765.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Fantasy</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/18867525/pexels-photo-18867525.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Anime</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/3122817/pexels-photo-3122817.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Comedy</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/36064230/pexels-photo-36064230.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Sci-Fi</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/15421709/pexels-photo-15421709.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Horror</span></div>
+    <div class="category-tile"><img src="https://images.pexels.com/photos/6635772/pexels-photo-6635772.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><span>Mystery</span></div>
+  </div>
+</section>
+
+<!-- ============ FEATURED COLLECTION ============ -->
+<section class="wrap reveal">
+  <div class="featured-split">
+    <div class="featured-media">
+      <div class="glow-ring"></div>
+      <img src="pictures/download1.jpg" alt="Featured collection still">
+    </div>
+    <div class="featured-text">
+      <h3 class="eyebrow">Featured Collection</h3>
+      <h2>The Independence Reel — Stories Made on Our Own Terms</h2>
+      <p>
+        Eclipsa gathers the boldest cinematic titles, series, and original releases in one exclusive collection — distinctive, atmospheric, and curated for true film lovers.
+      </p>
+      <button class="btn btn-primary" data-ripple><i class="fas fa-play"></i> Explore Collection</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMING SOON ============ -->
+<section id="coming-soon" class="wrap reveal">
+  <div class="coming-soon">
+    <div class="coming-grid">
+      <div>
+        <span class="eyebrow">Coming Soon</span>
+        <h2>Nightfall Protocol: Chapter Two</h2>
+        <p>The sequel to Eclipsa's highest-rated original drops this season. Set a reminder and be first in line when it premieres.</p>
+        <div class="countdown" id="countdown">
+          <div class="cell"><b id="cd-days">00</b><span>Days</span></div>
+          <div class="cell"><b id="cd-hours">00</b><span>Hours</span></div>
+          <div class="cell"><b id="cd-mins">00</b><span>Mins</span></div>
+          <div class="cell"><b id="cd-secs">00</b><span>Secs</span></div>
+        </div>
+      </div>
+      <div class="coming-actions">
+        <button class="btn btn-primary" data-ripple><i class="fas fa-bell"></i> Notify Me</button>
+        <button class="btn btn-ghost" data-ripple><i class="fas fa-film"></i> Watch Teaser</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AWARDS COLLECTION ============ -->
+<section class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Recognition</span>
+      <h2>Awards Collection</h2>
+      <p>Browse the titles the critics couldn't stop praising.</p>
+    </div>
+  </div>
+
+  <div class="awards-grid reveal-stagger">
+    <div class="award-tile"><img src="https://images.pexels.com/photos/6532364/pexels-photo-6532364.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><div class="award-body"><div class="ico"><i class="fas fa-trophy"></i></div><h5>Oscar Winners</h5><span>Best-in-class direction &amp; script</span></div></div>
+    <div class="award-tile"><img src="https://images.pexels.com/photos/16277399/pexels-photo-16277399.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><div class="award-body"><div class="ico"><i class="fas fa-bolt"></i></div><h5>Superhero Sagas</h5><span>Big-universe action epics</span></div></div>
+    <div class="award-tile"><img src="https://images.pexels.com/photos/17785314/pexels-photo-17785314.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><div class="award-body"><div class="ico"><i class="fas fa-mask"></i></div><h5>Caped Crusaders</h5><span>Dark, atmospheric hero stories</span></div></div>
+    <div class="award-tile"><img src="https://images.pexels.com/photos/29508639/pexels-photo-29508639.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><div class="award-body"><div class="ico"><i class="fas fa-crown"></i></div><h5>Eclipsa Originals</h5><span>Exclusive to this platform</span></div></div>
+    <div class="award-tile"><img src="https://images.pexels.com/photos/29707905/pexels-photo-29707905.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><div class="award-body"><div class="ico"><i class="fas fa-star"></i></div><h5>Top Rated</h5><span>Highest audience scores</span></div></div>
+    <div class="award-tile"><img src="https://images.pexels.com/photos/7610808/pexels-photo-7610808.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"><div class="award-body"><div class="ico"><i class="fas fa-pen-fancy"></i></div><h5>Critics' Choice</h5><span>Reviewed &amp; recommended</span></div></div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Loved by members</span>
+      <h2>What People Are Saying</h2>
+      <p>A few words from the Eclipsa community.</p>
+    </div>
+  </div>
+
+  <div class="testimonial-grid reveal-stagger">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>The catalogue feels curated instead of endless — every night I actually find something worth finishing.</p>
+      <div class="testi-person"><div class="testi-avatar">R</div><div><b>Ravi M.</b><span>Member since 2023</span></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>Picture quality and the interface both feel a full generation ahead of anything else I've used.</p>
+      <div class="testi-person"><div class="testi-avatar">L</div><div><b>Leah S.</b><span>Member since 2024</span></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>The originals alone are worth it — Nightfall Protocol is genuinely one of the best things I've watched this year.</p>
+      <div class="testi-person"><div class="testi-avatar">D</div><div><b>Daniel K.</b><span>Member since 2022</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DISCOVERY / GENRE MOODS ============ -->
+<section id="discovery" class="wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Explore Catalogue</span>
+      <h2>Find Your Next Obsession</h2>
+      <p>Whatever you're in the mood for, there's something worth watching.</p>
+    </div>
+  </div>
+
+  <div class="genre-showcase-grid reveal-stagger">
+    <a href="#trending" class="genre-card" data-ripple>
+      <div class="genre-card-bg" style="background-image: url('pictures/genre-action.jpg');"></div>
+      <div class="genre-card-overlay"></div>
+      <div class="genre-card-content">
+        <span class="genre-pill">Action</span>
+        <h3>High Octane &amp; Combat</h3>
+        <p>Adrenaline-fueled blockbusters, epic warfare &amp; high-stakes chases</p>
+        <div class="genre-card-footer">
+          <span class="genre-count">84 Titles</span>
+          <div class="genre-btn-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="javascript:void(0)" class="genre-card" data-ripple>
+      <div class="genre-card-bg" style="background-image: url('pictures/genre-scifi.jpg');"></div>
+      <div class="genre-card-overlay"></div>
+      <div class="genre-card-content">
+        <span class="genre-pill">Sci-Fi</span>
+        <h3>Future Worlds &amp; AI</h3>
+        <p>Deep space odysseys, cybernetic frontiers &amp; alternate realities</p>
+        <div class="genre-card-footer">
+          <span class="genre-count">62 Titles</span>
+          <div class="genre-btn-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="javascript:void(0)" class="genre-card" data-ripple>
+      <div class="genre-card-bg" style="background-image: url('pictures/genre-thriller.jpg');"></div>
+      <div class="genre-card-overlay"></div>
+      <div class="genre-card-content">
+        <span class="genre-pill">Thriller</span>
+        <h3>Mystery &amp; Suspense</h3>
+        <p>Edge-of-your-seat suspense, dark noir mysteries &amp; criminal syndicates</p>
+        <div class="genre-card-footer">
+          <span class="genre-count">79 Titles</span>
+          <div class="genre-btn-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="javascript:void(0)" class="genre-card" data-ripple>
+      <div class="genre-card-bg" style="background-image: url('pictures/genre-drama.jpg');"></div>
+      <div class="genre-card-overlay"></div>
+      <div class="genre-card-content">
+        <span class="genre-pill">Drama</span>
+        <h3>Human Stories &amp; Power</h3>
+        <p>Intense character studies, prestige award winners &amp; emotional journeys</p>
+        <div class="genre-card-footer">
+          <span class="genre-count">95 Titles</span>
+          <div class="genre-btn-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="javascript:void(0)" class="genre-card" data-ripple>
+      <div class="genre-card-bg" style="background-image: url('pictures/genre-comedy.jpg');"></div>
+      <div class="genre-card-overlay"></div>
+      <div class="genre-card-content">
+        <span class="genre-pill">Comedy</span>
+        <h3>Sharp Wit &amp; Satire</h3>
+        <p>Witty satire, irreverent laughs &amp; feel-good crowd favorites</p>
+        <div class="genre-card-footer">
+          <span class="genre-count">53 Titles</span>
+          <div class="genre-btn-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="javascript:void(0)" class="genre-card" data-ripple>
+      <div class="genre-card-bg" style="background-image: url('pictures/genre-fantasy.jpg');"></div>
+      <div class="genre-card-overlay"></div>
+      <div class="genre-card-content">
+        <span class="genre-pill">Fantasy</span>
+        <h3>Mythic Realms &amp; Magic</h3>
+        <p>Mythic realms, ancient kingdoms &amp; grand legendary sagas</p>
+        <div class="genre-card-footer">
+          <span class="genre-count">68 Titles</span>
+          <div class="genre-btn-arrow"><i class="fas fa-arrow-right"></i></div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <a href="#" class="brand"><span class="mark">E</span>ECLIPSA</a>
+      <p class="footer-desc">Your ultimate destination for premier streaming — discover blockbuster movies, binge-worthy series, and exclusive originals in one cinematic experience.</p>
+      <div class="social-row">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="Google Plus"><i class="fab fa-google-plus-g"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#new-releases">New Releases</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Merchandise</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="movies.html">Movies</a></li>
+        <li><a href="#top-picks">Top Picks</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#coming-soon">Coming Soon</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact Info</h4>
+      <p><i class="fas fa-phone-alt"></i> (888) 665-8808</p>
+      <p><i class="fas fa-envelope"></i> contact@eclipsa.com</p>
+      <p><i class="fas fa-map-marker-alt"></i> 18 Brewer Street, Soho, London W1F 0SH</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Eclipsa — All rights reserved.</span>
+    <span>Stream Cinema. Feel Everything.</span>
+  </div>
+</footer>
+
+<!-- ============ WATCHLIST DRAWER ============ -->
+<div class="watchlist-drawer-overlay" id="watchlistOverlay" aria-hidden="true"></div>
+<aside class="watchlist-drawer" id="watchlistDrawer" role="dialog" aria-modal="true" aria-label="My Watchlist">
+  <div class="watchlist-header">
+    <div class="watchlist-title-wrap">
+      <i class="fas fa-bookmark text-violet"></i>
+      <h3>My Watchlist</h3>
+      <span class="watchlist-count-pill" id="watchlistCountPill">0 Saved</span>
+    </div>
+    <button type="button" class="watchlist-close-btn" id="watchlistCloseBtn" aria-label="Close Watchlist">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="watchlist-body" id="watchlistBody">
+    <!-- Saved items dynamically rendered here -->
+  </div>
+</aside>
+
+<!-- Floating Toast Notification -->
+<div class="global-toast" id="globalToast" role="status">
+  <i class="fas fa-bookmark"></i>
+  <span class="toast-text"></span>
+</div>
+
+<script src="home.js"></script>
+</body>
+</html>

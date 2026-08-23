@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime — Eclipsa Streaming</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>try { const user = JSON.parse(localStorage.getItem('eclipsa_user') || 'null'); if (!user || !user.loggedIn) window.location.replace('signup.html'); } catch (error) { window.location.replace('signup.html'); }</script>
+</head>
+<body class="movies-page anime-page">
+  <div class="ambient" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div><div class="grid-mesh"></div></div>
+  <header class="navbar" id="navbar">
+    <a href="index.html" class="brand"><span class="mark">E</span>ECLIPSA</a>
+    <nav class="nav-links"><a href="index.html">Home</a><a href="movies.html">Movies</a><a href="series.html">Series</a><a href="anime.html" class="active">Anime</a></nav>
+    <div class="nav-actions"><button class="icon-btn theme-toggle" type="button" aria-label="Switch theme"><i class="fas fa-sun"></i></button><div class="user-menu-wrap" id="userMenuWrap"><a href="signup.html" class="nav-signin-link" id="navSignInLink"><i class="fas fa-user-plus"></i> <span>Sign Up</span></a><button class="avatar-btn" id="navAvatarBtn" title="Account Menu" style="display:none;" aria-expanded="false">U</button><div class="user-dropdown" id="userDropdown"><div class="user-dropdown-head"><div class="user-dropdown-name" id="userNameDisplay">User</div><div class="user-dropdown-email" id="userEmailDisplay">user@example.com</div></div><a href="index.html#watchlist"><i class="fas fa-heart"></i> My Watchlist</a><a href="index.html#settings"><i class="fas fa-sliders"></i> Account Settings</a><button type="button" class="signout-btn" id="signOutBtn"><i class="fas fa-right-from-bracket"></i> Sign Out</button></div></div><button class="icon-btn nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button></div>
+  </header>
+
+  <section class="movies-hero anime-hero"><div class="movies-hero-content"><span class="eyebrow">Stories Beyond Imagination</span><h1>Enter your next <span class="grad">anime world.</span></h1><p>Discover legendary adventures, unforgettable heroes, and beautifully animated stories.</p></div></section>
+
+  <main>
+    <section class="wrap movie-library-section"><div class="section-head"><div><span class="eyebrow">Start Here</span><h2>Fan Favourites</h2><p>Iconic shows that belong at the top of every watchlist.</p></div></div><div class="movie-five-grid">
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/JUJUTSU KAISEN.jpg" alt="Jujutsu Kaisen"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Jujutsu Kaisen</h5><div class="card-tags">Action · Supernatural</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/11 Weirdest Devil Fruits In One Piece, Even Oda Might Not Remember Them.jpg" alt="One Piece"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>One Piece</h5><div class="card-tags">Adventure · Fantasy</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/download (3).jpg" alt="Demon Slayer"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Demon Slayer</h5><div class="card-tags">Action · Fantasy</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/Bluelock.jpg" alt="Blue Lock"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Blue Lock</h5><div class="card-tags">Sports · Drama</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/10 Coolest Dandadan Powers, Ranked.jpg" alt="Dandadan"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Dandadan</h5><div class="card-tags">Action · Supernatural</div></div></article>
+    </div></section>
+
+    <section class="wrap movie-library-section"><div class="section-head"><div><span class="eyebrow">Epic Quests</span><h2>Fantasy &amp; Adventure</h2><p>Travel across strange worlds where every journey holds a new legend.</p></div></div><div class="movie-five-grid">
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/download (9).jpg" alt="Frieren: Beyond Journey's End"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Frieren</h5><div class="card-tags">Fantasy · Adventure</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/Lunar Realms - Your Gateway to Anime, Manga, Novels, and NSFW.jpg" alt="Solo Leveling"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Solo Leveling</h5><div class="card-tags">Action · Fantasy</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/KonoSuba.jpg" alt="KonoSuba"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>KonoSuba</h5><div class="card-tags">Comedy · Fantasy</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/No Game No Life (2014).jpg" alt="No Game No Life"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>No Game No Life</h5><div class="card-tags">Fantasy · Game</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/The Upcoming Best Fantasy Film Already Has 3 Perfect Seasons.jpg" alt="That Time I Got Reincarnated as a Slime"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>That Time I Got Reincarnated as a Slime</h5><div class="card-tags">Fantasy · Adventure</div></div></article>
+    </div></section>
+
+    <section class="wrap movie-library-section"><div class="section-head"><div><span class="eyebrow">Hidden Truths</span><h2>Thriller &amp; Mystery</h2><p>High-stakes stories full of secrets, suspense, and shocking turns.</p></div></div><div class="movie-five-grid">
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/Amazon_com_ Death Note Poster Light Yagami Merch Anime Cool Wall Art Print Poster 12x18_ Posters & Prints.jpg" alt="Death Note"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Death Note</h5><div class="card-tags">Mystery · Thriller</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/evangelion.jpg" alt="Neon Genesis Evangelion"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Neon Genesis Evangelion</h5><div class="card-tags">Sci-Fi · Drama</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/download (10).jpg" alt="Berserk"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Berserk</h5><div class="card-tags">Dark Fantasy · Drama</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/Class room.jpg" alt="Assassination Classroom"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Assassination Classroom</h5><div class="card-tags">Comedy · Action</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/TOKYO REVENGERS 2.jpg" alt="Tokyo Revengers"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Tokyo Revengers</h5><div class="card-tags">Action · Drama</div></div></article>
+    </div></section>
+
+    <section class="wrap movie-library-section"><div class="section-head"><div><span class="eyebrow">Timeless Classics</span><h2>Anime Legends</h2><p>Beloved series that have shaped generations of anime fans.</p></div></div><div class="movie-five-grid">
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/Naruto Shippuden Naruto Sakura Kakashi Poster.jpg" alt="Naruto Shippuden"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Naruto Shippuden</h5><div class="card-tags">Action · Adventure</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/download (4).jpg" alt="Bleach"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Bleach</h5><div class="card-tags">Action · Supernatural</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/Fullmetal Alchemist Brotherhood Anime Wallpaper _ Edward & Alphonse Elric Epic Art.jpg" alt="Fullmetal Alchemist Brotherhood"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Fullmetal Alchemist: Brotherhood</h5><div class="card-tags">Adventure · Fantasy</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/Sword Art Online de 2012.jpg" alt="Sword Art Online"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Sword Art Online</h5><div class="card-tags">Adventure · Romance</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/fire force.jpg" alt="Fire Force"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Fire Force</h5><div class="card-tags">Action · Sci-Fi</div></div></article>
+    </div></section>
+
+    <section class="wrap movie-library-section"><div class="section-head"><div><span class="eyebrow">Warm &amp; Wonderful</span><h2>Comedy &amp; Slice of Life</h2><p>Comforting, hilarious, and heartfelt stories for every mood.</p></div></div><div class="movie-five-grid">
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/Spy x Family Season 3.jpg" alt="Spy x Family"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Spy × Family</h5><div class="card-tags">Comedy · Family</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/download (7).jpg" alt="The Disastrous Life of Saiki K."><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>The Disastrous Life of Saiki K.</h5><div class="card-tags">Comedy · Slice of Life</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/download (8).jpg" alt="Pokémon"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>Pokémon</h5><div class="card-tags">Adventure · Family</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/_The Apothecary Diaries_.jpg" alt="The Apothecary Diaries"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>The Apothecary Diaries</h5><div class="card-tags">Mystery · Historical</div></div></article>
+      <article class="movie-card"><div class="card-media"><img src="Anime pictures/download.jpg" alt="A Silent Voice"><div class="card-play"><i class="fas fa-play"></i></div></div><div class="card-info"><h5>A Silent Voice</h5><div class="card-tags">Drama · Romance</div></div></article>
+    </div></section>
+  </main>
+  <footer class="site-footer"><div class="footer-bottom"><span>© 2026 Eclipsa — All rights reserved.</span><span>Stream Cinema. Feel Everything.</span></div></footer>
+  <script src="catalog.js"></script>
+</body>
+</html>

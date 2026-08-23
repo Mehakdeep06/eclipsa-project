@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up — Eclipsa Streaming</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="auth-page">
+
+<!-- Cinematic Rich Background Image & Ambient Blobs -->
+<div class="auth-bg-overlay" aria-hidden="true"></div>
+<div class="ambient" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+</div>
+
+<!-- Top Navigation -->
+<nav class="auth-split-nav">
+  <a href="index.html" class="brand">
+    <span class="mark">E</span>
+    ECLIPSA
+  </a>
+  <div class="auth-nav-actions">
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">
+      <i class="fas fa-sun"></i>
+    </button>
+    <a href="index.html" class="auth-back-btn">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back</span>
+    </a>
+  </div>
+</nav>
+
+<!-- Centered Auth Card -->
+<main class="auth-card-wrapper">
+  <div class="auth-card signup-card">
+    <div class="auth-card-head">
+      <h2>CREATE ACCOUNT</h2>
+      <p>Start streaming on <span class="brand-highlight">Eclipsa</span></p>
+    </div>
+
+    <!-- Alert Banner -->
+    <div class="auth-alert" id="authAlert" role="alert">
+      <i class="fas fa-exclamation-circle"></i>
+      <span class="alert-text"></span>
+    </div>
+
+    <!-- Sign Up Form -->
+    <form id="signupForm" novalidate>
+      <div class="form-group" id="nameGroup">
+        <div class="input-wrap">
+          <input 
+            type="text" 
+            id="signupName" 
+            name="fullname" 
+            placeholder="Full Name" 
+            autocomplete="name"
+            required
+          >
+          <i class="fas fa-user input-icon"></i>
+        </div>
+        <div class="field-error" id="nameError"><i class="fas fa-circle-exclamation"></i> Please enter your name.</div>
+      </div>
+
+      <div class="form-group" id="emailGroup">
+        <div class="input-wrap">
+          <input 
+            type="email" 
+            id="signupEmail" 
+            name="email" 
+            placeholder="Email Address" 
+            autocomplete="email"
+            required
+          >
+          <i class="fas fa-envelope input-icon"></i>
+        </div>
+        <div class="field-error" id="emailError"><i class="fas fa-circle-exclamation"></i> Please enter a valid email address.</div>
+      </div>
+
+      <div class="form-group" id="passwordGroup">
+        <div class="input-wrap">
+          <input 
+            type="password" 
+            id="signupPassword" 
+            name="password" 
+            placeholder="Password (Min 6 chars)" 
+            autocomplete="new-password"
+            required
+          >
+          <i class="fas fa-lock input-icon"></i>
+          <button type="button" class="toggle-password" data-target="signupPassword" aria-label="Toggle password visibility">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <div class="password-strength" id="passwordStrength">
+          <div class="strength-bars">
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+          </div>
+          <span class="strength-text" id="strengthText">Password strength</span>
+        </div>
+        <div class="field-error" id="passwordError"><i class="fas fa-circle-exclamation"></i> Password must be at least 6 characters.</div>
+      </div>
+
+      <div class="form-group" id="confirmPasswordGroup">
+        <div class="input-wrap">
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            name="confirmPassword" 
+            placeholder="Confirm Password" 
+            autocomplete="new-password"
+            required
+          >
+          <i class="fas fa-shield-alt input-icon"></i>
+          <button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Toggle password visibility">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <div class="field-error" id="confirmPasswordError"><i class="fas fa-circle-exclamation"></i> Passwords do not match.</div>
+      </div>
+
+      <div class="form-group" id="termsGroup">
+        <label class="checkbox-custom">
+          <input type="checkbox" id="termsAgree" name="terms" required>
+          <span>I agree to Terms &amp; Privacy Policy</span>
+        </label>
+        <div class="field-error" id="termsError"><i class="fas fa-circle-exclamation"></i> You must agree to Terms &amp; Privacy.</div>
+      </div>
+
+      <button type="submit" class="btn-auth-submit" id="submitBtn">
+        <span class="btn-text">Sign Up &nbsp;<i class="fas fa-arrow-right"></i></span>
+        <span class="btn-spinner" aria-hidden="true"></span>
+      </button>
+
+      <div class="auth-divider">
+        <span>or sign up with</span>
+      </div>
+
+      <div class="social-grid">
+        <button type="button" class="btn-social social-btn-mock" data-provider="Google">
+          <i class="fab fa-google" style="color: #ea4335;"></i> Google
+        </button>
+        <button type="button" class="btn-social social-btn-mock" data-provider="Facebook">
+          <i class="fab fa-facebook-f" style="color: #1877f2;"></i> Facebook
+        </button>
+      </div>
+
+      <div class="auth-switch">
+        Already have an account? <a href="login.html">Sign in now</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<!-- Toast notification -->
+<div class="auth-toast" id="authToast" role="status">
+  <i class="fas fa-check-circle"></i>
+  <span class="toast-text"></span>
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>
