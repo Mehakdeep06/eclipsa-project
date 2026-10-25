@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080711">
+  <title>Account Settings — Eclipsa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body class="settings-page">
+  <div class="ambient" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div><div class="grid-mesh"></div></div>
+  <header class="navbar settings-navbar" id="navbar">
+    <a href="index.html" class="brand"><span class="mark">E</span>ECLIPSA</a>
+    <nav class="nav-links"><a href="index.html">Home</a><a href="movies.html">Movies</a><a href="series.html">Series</a><a href="anime.html">Anime</a><a href="mylist.html">My List</a><a href="./feedback.html">Feedback</a></nav>
+    <div class="nav-actions">
+      <div class="search-wrap" id="searchWrap"><div class="search-pill"><input type="text" id="searchInput" placeholder="Search movies, series..." autocomplete="off"><button type="button" id="searchBtn" aria-label="Search"><i class="fas fa-search"></i></button></div></div>
+      <div class="notification-wrap" id="notificationWrap"><button class="icon-btn notif-btn" id="notifBtn" type="button" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i><span class="ping" id="notifPing"></span></button><div class="notifications-dropdown" id="notificationsDropdown"><div class="notif-header"><h4>Notifications</h4><button type="button" class="notif-mark-read-btn" id="notifMarkReadBtn">Mark all as read</button></div><div class="notif-list" id="notifList"><div class="notif-item"><div class="notif-icon"><i class="fas fa-fire"></i></div><div class="notif-content"><div class="notif-title">Arcane Season 2 is now streaming in 4K Ultra HD</div><div class="notif-time">2 hours ago</div></div><span class="notif-unread-dot"></span></div><div class="notif-item"><div class="notif-icon"><i class="fas fa-film"></i></div><div class="notif-content"><div class="notif-title">Dune: Part Two exclusive bonus clips added</div><div class="notif-time">5 hours ago</div></div><span class="notif-unread-dot"></span></div></div></div></div>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme" title="Switch theme"><i class="fas fa-sun"></i></button>
+      <div class="user-menu-wrap" id="userMenuWrap">
+        <button class="avatar-btn" id="navAvatarBtn" type="button" aria-label="Account menu" aria-expanded="false">G</button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-head"><div class="user-dropdown-name" id="userNameDisplay">Guest Explorer</div><div class="user-dropdown-email" id="userEmailDisplay">guest@eclipsa.stream</div></div>
+          <a href="mylist.html"><i class="fas fa-heart"></i> My Watchlist</a>
+          <a href="./settings.html"><i class="fas fa-sliders"></i> Account Settings</a>
+          <a href="./feedback.html"><i class="fas fa-comment-dots"></i> Feedback</a>
+          <button type="button" class="signout-btn" id="signOutBtn"><i class="fas fa-right-from-bracket"></i> Sign Out</button>
+        </div>
+      </div>
+      <button class="icon-btn nav-toggle" type="button" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <main class="settings-main wrap">
+    <div class="settings-heading">
+      <div><span class="eyebrow">Your Eclipsa account</span><h1>Settings</h1><p>Manage your profile and choose how you experience Eclipsa.</p></div>
+      <a class="settings-back" href="index.html"><i class="fas fa-arrow-left"></i> Back to Eclipsa</a>
+    </div>
+
+    <section class="settings-panel profile-panel" aria-labelledby="profileTitle">
+      <div class="panel-heading"><div class="panel-icon"><i class="fas fa-user-astronaut"></i></div><div><h2 id="profileTitle">Your profile</h2><p>Your account details and the way you like to watch.</p></div></div>
+      <form id="profileForm" class="profile-form">
+        <div class="profile-avatar" id="profileAvatar">G</div>
+        <div class="profile-fields">
+          <label>Display name<input id="profileName" name="name" type="text" maxlength="50" placeholder="Your name" required></label>
+          <label>Email address<input id="profileEmail" name="email" type="email" placeholder="you@example.com" required></label>
+          <div class="preference-divider"><span><i class="fas fa-sliders"></i> Viewing preferences</span><small>Personalize playback on this device</small></div>
+          <label>Audio language<select id="audioLanguage" name="audioLanguage" class="settings-select"><option value="English">English</option><option value="Hindi">Hindi</option><option value="Spanish">Spanish</option><option value="French">French</option><option value="Japanese">Japanese</option><option value="Korean">Korean</option></select></label>
+          <label>Subtitle language<select id="subtitleLanguage" name="subtitleLanguage" class="settings-select"><option value="Off">Off</option><option value="English">English</option><option value="Hindi">Hindi</option><option value="Spanish">Spanish</option><option value="French">French</option><option value="Japanese">Japanese</option><option value="Korean">Korean</option></select></label>
+          <label>Streaming quality<select id="streamingQuality" name="streamingQuality" class="settings-select"><option value="auto">Auto (recommended)</option><option value="high">High — best available</option><option value="balanced">Balanced</option><option value="data-saver">Data saver</option></select></label>
+          <label>Content maturity<select id="maturityRating" name="maturityRating" class="settings-select"><option value="all">All ages</option><option value="7">7+</option><option value="13">13+</option><option value="16">16+</option><option value="18">18+</option></select></label>
+          <div class="preference-toggles">
+            <label class="preference-toggle"><span class="toggle-copy"><strong>Play next episode</strong><small>Automatically continue a series</small></span><input type="checkbox" id="autoplayNext"><span class="toggle-track" aria-hidden="true"></span></label>
+            <label class="preference-toggle"><span class="toggle-copy"><strong>Autoplay previews</strong><small>Play previews while browsing</small></span><input type="checkbox" id="autoplayPreviews"><span class="toggle-track" aria-hidden="true"></span></label>
+          </div>
+          <div class="profile-form-bottom"><span class="form-hint"><i class="fas fa-lock"></i> Your details are saved on this device.</span><button class="btn btn-primary" type="submit"><i class="fas fa-check"></i> Save profile</button></div>
+        </div>
+      </form>
+    </section>
+
+    <section class="membership-section" aria-labelledby="membershipTitle">
+      <div class="membership-intro"><div><span class="eyebrow">Find your perfect fit</span><h2 id="membershipTitle">Membership</h2><p>Pick a package for the way you like to watch.</p></div><div class="billing-note"><i class="fas fa-circle-info"></i> Plans are a demo selection. No payment is taken.</div></div>
+      <div class="membership-grid" id="membershipGrid">
+        <article class="plan-card" data-plan="starter">
+          <div class="plan-topline"><span class="plan-label">A little of everything</span><span class="plan-current" hidden>Current plan</span></div>
+          <h3>Starter</h3><div class="plan-price"><strong>Free</strong><span>forever</span></div>
+          <p class="plan-description">Settle in and explore the Eclipsa catalogue.</p>
+          <ul><li><i class="fas fa-check"></i> Stream in HD</li><li><i class="fas fa-check"></i> Watch on 1 screen</li><li><i class="fas fa-check"></i> Browse movies, series &amp; anime</li></ul>
+          <button class="plan-button" type="button" data-select-plan="starter">Choose Starter</button>
+        </article>
+        <article class="plan-card plan-featured" data-plan="plus">
+          <div class="plan-topline"><span class="plan-label"><i class="fas fa-sparkles"></i> Most popular</span><span class="plan-current" hidden>Current plan</span></div>
+          <h3>Plus</h3><div class="plan-price"><strong>$8.99</strong><span>/ month</span></div>
+          <p class="plan-description">More ways to enjoy your favourites, together.</p>
+          <ul><li><i class="fas fa-check"></i> Everything in Starter</li><li><i class="fas fa-check"></i> Full HD, ad-free viewing</li><li><i class="fas fa-check"></i> Watch on 2 screens</li><li><i class="fas fa-check"></i> Downloads for offline viewing</li></ul>
+          <button class="plan-button" type="button" data-select-plan="plus">Choose Plus</button>
+        </article>
+        <article class="plan-card" data-plan="premiere">
+          <div class="plan-topline"><span class="plan-label">The full experience</span><span class="plan-current" hidden>Current plan</span></div>
+          <h3>Premiere</h3><div class="plan-price"><strong>$13.99</strong><span>/ month</span></div>
+          <p class="plan-description">Bring everyone along for the cinematic ride.</p>
+          <ul><li><i class="fas fa-check"></i> Everything in Plus</li><li><i class="fas fa-check"></i> 4K Ultra HD &amp; Dolby Atmos</li><li><i class="fas fa-check"></i> Watch on 4 screens</li><li><i class="fas fa-check"></i> Early access to Eclipsa Originals</li></ul>
+          <button class="plan-button" type="button" data-select-plan="premiere">Choose Premiere</button>
+        </article>
+      </div>
+      <p class="membership-footnote"><i class="fas fa-shield-heart"></i> You can change your selection anytime in settings.</p>
+    </section>
+    <div class="settings-toast" id="settingsToast" role="status" aria-live="polite"><i class="fas fa-circle-check"></i><span></span></div>
+  </main>
+  <footer class="settings-footer"><a href="index.html" class="brand"><span class="mark">E</span>ECLIPSA</a><span>Stream Cinema. Feel Everything.</span></footer>
+  <script src="settings.js"></script>
+</body>
+</html>
+

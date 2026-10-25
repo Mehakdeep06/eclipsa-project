@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Watchlist — Eclipsa Streaming</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+  try {
+    let user = JSON.parse(localStorage.getItem('eclipsa_user') || 'null');
+    if (!user || !user.loggedIn) {
+      user = { name: 'Guest Explorer', email: 'guest@eclipsa.stream', initial: 'G', loggedIn: true, isGuest: true };
+      localStorage.setItem('eclipsa_user', JSON.stringify(user));
+    }
+  } catch (error) {}
+</script>
+</head>
+<body class="movies-page mylist-page">
+
+<!-- Ambient background blobs -->
+<div class="ambient" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+  <div class="grid-mesh"></div>
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <a href="index.html" class="brand">
+    <span class="mark">E</span>
+    ECLIPSA
+  </a>
+
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="movies.html">Movies</a>
+    <a href="series.html">Series</a>
+    <a href="anime.html">Anime</a>
+    <a href="mylist.html" class="active">My List <span class="nav-count-badge" id="navMyListBadge">0</span></a>
+  </nav>
+
+  <div class="nav-actions">
+    <div class="search-wrap" id="searchWrap">
+      <div class="search-pill">
+        <input type="text" id="searchInput" placeholder="Search watchlist, movies..." autocomplete="off">
+        <button type="button" id="searchBtn" aria-label="Search"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="search-results-dropdown" id="searchResultsDropdown" role="listbox"></div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="notification-wrap" id="notificationWrap">
+      <button class="icon-btn notif-btn" id="notifBtn" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i><span class="ping" id="notifPing"></span></button>
+      <div class="notifications-dropdown" id="notificationsDropdown">
+        <div class="notif-header">
+          <h4>Notifications</h4>
+          <button type="button" class="notif-mark-read-btn" id="notifMarkReadBtn">Mark all as read</button>
+        </div>
+        <div class="notif-list" id="notifList">
+          <div class="notif-item">
+            <div class="notif-icon"><i class="fas fa-fire"></i></div>
+            <div class="notif-content">
+              <div class="notif-title">Arcane Season 2 is now streaming in 4K Ultra HD</div>
+              <div class="notif-time">2 hours ago</div>
+            </div>
+            <span class="notif-unread-dot"></span>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon"><i class="fas fa-film"></i></div>
+            <div class="notif-content">
+              <div class="notif-title">Dune: Part Two exclusive bonus clips added</div>
+              <div class="notif-time">5 hours ago</div>
+            </div>
+            <span class="notif-unread-dot"></span>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon"><i class="fas fa-sparkles"></i></div>
+            <div class="notif-content">
+              <div class="notif-title">Stranger Things 5 teaser is now ready to stream</div>
+              <div class="notif-time">1 day ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme" title="Switch theme"><i class="fas fa-sun"></i></button>
+
+    <div class="user-menu-wrap" id="userMenuWrap">
+      <a href="signup.html" class="nav-signin-link" id="navSignInLink"><i class="fas fa-user-plus"></i> <span>Sign Up</span></a>
+      <button class="avatar-btn" id="navAvatarBtn" title="Account Menu" style="display:none;" aria-expanded="false">U</button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-head">
+          <div class="user-dropdown-name" id="userNameDisplay">User</div>
+          <div class="user-dropdown-email" id="userEmailDisplay">user@example.com</div>
+        </div>
+        <a href="mylist.html"><i class="fas fa-heart"></i> My Watchlist</a>
+        <a href="./settings.html"><i class="fas fa-sliders"></i> Account Settings</a>
+        <a href="./feedback.html"><i class="fas fa-comment-dots"></i> Feedback</a>
+        <button type="button" class="signout-btn" id="signOutBtn"><i class="fas fa-right-from-bracket"></i> Sign Out</button>
+      </div>
+    </div>
+
+    <button class="icon-btn nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+  </div>
+</header>
+
+<!-- ============ PAGE HERO ============ -->
+<section class="mylist-page-hero">
+  <div class="mylist-hero-content">
+    <span class="eyebrow">Personal Cinema Collection</span>
+    <h1>My <span class="grad">Watchlist</span></h1>
+    <p>All your saved movies, binge-worthy series, and anime in one place. Stream instantly or dive into detailed episodes and trailers.</p>
+  </div>
+</section>
+
+<!-- ============ TOOLBAR (FILTER TABS & SORTING) ============ -->
+<div class="catalog-toolbar">
+  <div class="catalog-filter-tabs" id="myListFilterTabs">
+    <button class="catalog-tab-btn is-active" data-tab="all" type="button">All Saved (<span id="tabCountAll">0</span>)</button>
+    <button class="catalog-tab-btn" data-tab="movie" type="button">Movies (<span id="tabCountMovie">0</span>)</button>
+    <button class="catalog-tab-btn" data-tab="series" type="button">Series (<span id="tabCountSeries">0</span>)</button>
+    <button class="catalog-tab-btn" data-tab="anime" type="button">Anime (<span id="tabCountAnime">0</span>)</button>
+  </div>
+
+  <div class="catalog-sort-wrap">
+    <select class="catalog-sort-select" id="myListSortSelect" aria-label="Sort Watchlist">
+      <option value="recent">Recently Added</option>
+      <option value="rating">Highest Rated (★)</option>
+      <option value="year">Release Year (Newest)</option>
+      <option value="title">Title (A–Z)</option>
+    </select>
+    <button type="button" class="catalog-clear-btn" id="myListClearBtn" title="Clear All Items">
+      <i class="fas fa-trash-alt"></i> Clear All
+    </button>
+  </div>
+</div>
+
+<!-- ============ MY LIST GRID SECTION ============ -->
+<main class="mylist-grid-section">
+  <div class="mylist-grid" id="myListGrid">
+    <!-- Populated dynamically by mylist.js -->
+  </div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <span>© 2026 Eclipsa — All rights reserved.</span>
+    <span>Stream Cinema. Feel Everything.</span>
+  </div>
+</footer>
+
+<!-- Floating Toast Notification -->
+<div class="global-toast" id="globalToast" role="status">
+  <i class="fas fa-bookmark"></i>
+  <span class="toast-text"></span>
+</div>
+
+<script src="data.js"></script>
+<script src="player.js"></script>
+<script src="modal.js"></script>
+<script src="mylist.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080711">
+  <title>Feedback — Eclipsa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="feedback.css">
+</head>
+<body class="feedback-page">
+  <div class="ambient" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div><div class="grid-mesh"></div></div>
+  <header class="navbar feedback-navbar" id="navbar">
+    <a href="index.html" class="brand"><span class="mark">E</span>ECLIPSA</a>
+    <nav class="nav-links"><a href="index.html">Home</a><a href="movies.html">Movies</a><a href="series.html">Series</a><a href="anime.html">Anime</a><a href="mylist.html">My List</a></nav>
+    <div class="nav-actions">
+      <div class="search-wrap" id="searchWrap"><div class="search-pill"><input type="text" id="searchInput" placeholder="Search movies, series..." autocomplete="off"><button type="button" id="searchBtn" aria-label="Search"><i class="fas fa-search"></i></button></div></div>
+      <div class="notification-wrap" id="notificationWrap"><button class="icon-btn notif-btn" id="notifBtn" type="button" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i><span class="ping" id="notifPing"></span></button><div class="notifications-dropdown" id="notificationsDropdown"><div class="notif-header"><h4>Notifications</h4><button type="button" class="notif-mark-read-btn" id="notifMarkReadBtn">Mark all as read</button></div><div class="notif-list" id="notifList"><div class="notif-item"><div class="notif-icon"><i class="fas fa-fire"></i></div><div class="notif-content"><div class="notif-title">Arcane Season 2 is now streaming in 4K Ultra HD</div><div class="notif-time">2 hours ago</div></div><span class="notif-unread-dot"></span></div><div class="notif-item"><div class="notif-icon"><i class="fas fa-film"></i></div><div class="notif-content"><div class="notif-title">Dune: Part Two exclusive bonus clips added</div><div class="notif-time">5 hours ago</div></div><span class="notif-unread-dot"></span></div></div></div></div>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Switch theme" title="Switch theme"><i class="fas fa-sun"></i></button>
+      <div class="user-menu-wrap" id="userMenuWrap">
+        <button class="avatar-btn" id="navAvatarBtn" type="button" aria-label="Account menu" aria-expanded="false">G</button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-head"><div class="user-dropdown-name" id="userNameDisplay">Guest Explorer</div><div class="user-dropdown-email" id="userEmailDisplay">guest@eclipsa.stream</div></div>
+          <a href="mylist.html"><i class="fas fa-heart"></i> My Watchlist</a><a href="./settings.html"><i class="fas fa-sliders"></i> Account Settings</a><a href="./feedback.html"><i class="fas fa-comment-dots"></i> Feedback</a>
+          <button type="button" class="signout-btn" id="signOutBtn"><i class="fas fa-right-from-bracket"></i> Sign Out</button>
+        </div>
+      </div>
+      <button class="icon-btn nav-toggle" type="button" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <main class="feedback-main wrap">
+    <div class="feedback-heading">
+      <div><span class="eyebrow">Help us make Eclipsa better</span><h1>We’re listening.</h1><p>Tell us what’s working, what could be better, or what you’d love to see next.</p></div>
+      <div class="feedback-heading-icon"><i class="fas fa-comment-dots"></i></div>
+    </div>
+    <div class="feedback-layout">
+      <form class="feedback-card" id="feedbackForm">
+        <div class="feedback-card-title"><div><h2>Share your feedback</h2><p>Every note helps shape what we stream next.</p></div><span class="required-note">* Required</span></div>
+        <label class="field-label" for="feedbackCategory">What’s this about? <span>*</span></label>
+        <select id="feedbackCategory" name="category" required>
+          <option value="" disabled selected>Select a topic</option>
+          <option>Watching &amp; playback</option><option>Finding movies and shows</option><option>Content request</option><option>Account or membership</option><option>Subtitles, audio &amp; accessibility</option><option>Website or app issue</option><option>Something else</option>
+        </select>
+        <fieldset class="rating-fieldset"><legend>How was your Eclipsa experience? <span>*</span></legend><div class="star-rating" role="radiogroup" aria-label="Rate your experience">
+          <input type="radio" name="rating" id="rating5" value="5" required><label for="rating5" aria-label="5 stars">★</label>
+          <input type="radio" name="rating" id="rating4" value="4"><label for="rating4" aria-label="4 stars">★</label>
+          <input type="radio" name="rating" id="rating3" value="3"><label for="rating3" aria-label="3 stars">★</label>
+          <input type="radio" name="rating" id="rating2" value="2"><label for="rating2" aria-label="2 stars">★</label>
+          <input type="radio" name="rating" id="rating1" value="1"><label for="rating1" aria-label="1 star">★</label>
+        </div><div class="rating-caption" id="ratingCaption">Choose a rating</div></fieldset>
+        <label class="field-label" for="feedbackSubject">Subject <span>*</span></label>
+        <input id="feedbackSubject" name="subject" type="text" maxlength="100" placeholder="Give your feedback a short title" required>
+        <div class="field-row">
+          <label><span class="field-label">Title or episode <small>(optional)</small></span><input name="title" type="text" maxlength="100" placeholder="What were you watching?"></label>
+          <label><span class="field-label">Device <small>(optional)</small></span><select name="device"><option value="">Choose device</option><option>Computer / web browser</option><option>Mobile phone</option><option>Tablet</option><option>Smart TV</option><option>Streaming device</option><option>Other</option></select></label>
+        </div>
+        <label class="field-label" for="feedbackMessage">Tell us more <span>*</span></label>
+        <textarea id="feedbackMessage" name="message" rows="6" maxlength="2000" placeholder="Share details, steps to reproduce an issue, or the kind of story you’d like us to add…" required></textarea>
+        <div class="message-meta"><span>Don’t include passwords or payment details.</span><span id="messageCount">0 / 2000</span></div>
+        <label class="field-label" for="feedbackEmail">Email for a follow-up <small>(optional)</small></label>
+        <input id="feedbackEmail" name="email" type="email" maxlength="160" placeholder="you@example.com">
+        <div class="form-submit-row"><span><i class="fas fa-lock"></i> Feedback is saved on this device for this demo.</span><button class="btn btn-primary" type="submit"><i class="fas fa-paper-plane"></i> Send feedback</button></div>
+      </form>
+      <aside class="feedback-aside">
+        <div class="aside-card aside-highlight"><div class="aside-icon"><i class="fas fa-lightbulb"></i></div><h3>Have a title in mind?</h3><p>We love hearing what you want to watch next. Tell us the title and what makes it special to you.</p></div>
+        <div class="aside-card"><div class="aside-icon"><i class="fas fa-circle-play"></i></div><h3>Something not playing right?</h3><p>Let us know your device, browser, and what happened. A few details make playback problems easier to track down.</p></div>
+        <div class="privacy-note"><i class="fas fa-shield-halved"></i><p>Please leave out passwords and payment details. Your feedback stays in this browser demo and is not sent to a support team.</p></div>
+      </aside>
+    </div>
+    <section class="feedback-success" id="feedbackSuccess" hidden role="status" aria-live="polite"><div class="success-mark"><i class="fas fa-check"></i></div><h2>Thanks for helping us improve.</h2><p>Your feedback has been saved in this browser.</p><button type="button" class="btn btn-ghost" id="sendAnother">Send another note</button><a href="index.html">Back to Eclipsa</a></section>
+  </main>
+  <footer class="settings-footer"><a href="index.html" class="brand"><span class="mark">E</span>ECLIPSA</a><span>Stream Cinema. Feel Everything.</span></footer>
+  <script src="feedback.js"></script>
+</body>
+</html>
+
